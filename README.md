@@ -55,3 +55,28 @@ Le fonctionnement par api est purement arbitraire et ce n'est pas le cas pour ce
 Observez le code source à votre disposition, tests unitaires compris. ;)
 
 La blochain (initialisé dans la classe Api()) a disposition est aujourd'hui bien incomplète. Pour fonctionner, toute blockchain a besoin d'un block initial. Initialisez donc un nouveau block à l'initialisation de la blockchain.
+
+Solution :
+
+``` java
+this.blockChain.add(new Block(1, this.pendingTransactions));
+```
+
+L'instanciation du premier block est réalisée simplement dans le constructeur de la blochain. Cette initialisation est un peu arbitraire.
+
+#### Etape 1.2 : Ajouter une transaction
+
+Un endpoint a été rajouté dans la classe Api :
+
+``` java
+@PostMapping("/transactions")
+public ResponseEntity newTransaction(@RequestBody Transaction transaction) {
+
+    blockchain.newTransaction(transaction);
+    return new ResponseEntity("{\"message\": \"La transaction est en attente\"}", HttpStatus.CREATED);
+}
+```
+
+Un TU a également été ajouté. On remarquera d'ailleurs que celui-ci ne plante pas alors que la méthode n'est pas implémenté...
+
+Complétez la méthode newTransaction(). N'hésitez pas à réflechir pour compléter le TU.

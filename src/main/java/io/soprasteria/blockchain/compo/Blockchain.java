@@ -1,5 +1,6 @@
 package io.soprasteria.blockchain.compo;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,12 @@ public class Blockchain {
     public Blockchain() {
         this.blocks = new ArrayList<>();
         this.pendingTransactions = new ArrayList<>();
+
+        this.blocks.add(new Block(1, this.pendingTransactions));
+    }
+
+    public void newTransaction(@NotNull Transaction transaction) {
+
     }
 
     private Block lastBlock() {

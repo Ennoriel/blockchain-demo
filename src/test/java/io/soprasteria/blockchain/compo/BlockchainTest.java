@@ -18,4 +18,14 @@ class BlockchainTest {
         blockchain = new Blockchain();
         transaction = new Transaction("testSender", "testRecipient", 1);
     }
+
+    @Test
+    void newTransaction() {
+        assertEquals(0, blockchain.getPendingTransactions().size(), "Pending Transaction should be 0 after chain initialization");
+
+        blockchain.newTransaction(transaction);
+
+        assertEquals(1, blockchain.getPendingTransactions().size(), "Pending Transaction should be 1 after adding 1 transaction");
+        assertEquals(transaction, blockchain.getPendingTransactions().get(0), "Pending Transaction should be made of the one added");
+    }
 }
