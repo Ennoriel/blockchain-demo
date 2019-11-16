@@ -130,6 +130,19 @@ Le hash est une empreinte numérique servant à identifier rapidement la donnée
 private String previousHash;
 ```
 
+``` java
+@NotNull String hash() {
+    // Calcule le hash d'un block. A compléter au cours de l'étape 2.3
+    return jsonify();
+}
+
+@NotNull
+public String jsonify() {
+    // retourne la représentation json d'un block. A compléter au cours de l'étape 2.3
+    return "";
+}
+```
+
 Le nonce est un **nombre arbitraire** d'un block destiné à être utilisé pour valider une preuve de travail.
 
 ``` java

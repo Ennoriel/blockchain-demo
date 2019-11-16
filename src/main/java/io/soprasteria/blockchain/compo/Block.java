@@ -25,8 +25,20 @@ public class Block {
         this.nonce = 0;
     }
 
+    @NotNull String hash() {
+        // Calcule le hash d'un block. A compléter au cours de l'étape 2.3
+        return jsonify();
+    }
+
+    @NotNull
+    public String jsonify() {
+        // retourne la représentation json d'un block. A compléter au cours de l'étape 2.3
+        return "";
+    }
+
     @NotNull boolean proofOfWork(@NotNull int difficulty) {
         // tant que la méthode n'est pas implémenté (étape à venir), on considère que la preuve de travail est validé.
+        // A compléter au cours de l'étape 2.2
         return true;
     }
 
