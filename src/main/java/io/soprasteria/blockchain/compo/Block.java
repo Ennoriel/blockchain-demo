@@ -43,6 +43,9 @@ public class Block {
     }
 
     void mine(@NotNull int difficulty) {
+        while (!this.proofOfWork(difficulty)) {
+            incrementNonce();
+        }
     }
 
     public int getIndex() {

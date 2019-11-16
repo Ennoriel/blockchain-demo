@@ -15,7 +15,7 @@ public class Blockchain {
         this.blocks = new ArrayList<>();
         this.pendingTransactions = new ArrayList<>();
 
-        this.blocks.add(new Block(1, new ArrayList<>(this.pendingTransactions)));
+        this.blocks.add(new Block(1, this.pendingTransactions, null));
     }
 
     public void newTransaction(@NotNull Transaction transaction) {
@@ -23,7 +23,7 @@ public class Blockchain {
     }
 
     @NotNull public Block addBlock() {
-        Block block = new Block(lastIndex() + 1, new ArrayList<>(pendingTransactions));
+        Block block = new Block(lastIndex() + 1, new ArrayList<>(pendingTransactions), lastBlock().hash());
         block.mine(DIFFICULTY);
         getBlocks().add(block);
         getPendingTransactions().clear();

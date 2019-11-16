@@ -13,8 +13,14 @@ class BlockTest {
 
     @BeforeEach
     void setUp() {
-        block = new Block(1, Collections.singletonList(new Transaction("testSender", "testRecipient", 1)));
+        block = new Block(1, Collections.singletonList(new Transaction("testSender", "testRecipient", 1)), "testPreviousHash");
         blockJson = String.format("{\"index\":1,\"date\":%s,\"transactions\":[{\"sender\":\"testSender\",\"recipient\":\"testRecipient\",\"amount\":1}],\"previousHash\":\"testPreviousHash\",\"nonce\":0}", block.getDate().getTime());
+    }
+
+    @Test
+    void proofOfWork() {
+        Assert.isTrue(block.proofOfWork(0), "proofOfWork method doesn't validate the 0 difficulty level.");
+        Assert.isTrue(!block.proofOfWork(18), "proofOfWork method validates 18 difficulty level but shouldn't.");
     }
 
     @Test

@@ -170,3 +170,15 @@ block.mine(DIFFICULTY);
 Complétez les appels au constructeur Block() qui se voit modifié avec le hash du block précédant.
 
 Complétez également la méthode mine(). Celle-ci doit permettre d'augmenter la valeur nonce jusqu'à ce que la preuve de travail (méthode proofOfWork() à utiliser) nous renvoie une valeur vraie.
+
+Solution :
+
+``` java
+while (!this.proofOfWork(difficulty)) {
+    incrementNonce();
+}
+```
+
+#### Etape 2.2 : la méthode proofOfWork()
+
+Complétez la méthode proofOfWork(). Elle permet de valider que le hash de la représentation json d'un block (méthode hash() à utiliser) est valide (qu'il commence par 3 zéros).
