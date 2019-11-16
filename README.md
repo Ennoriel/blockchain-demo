@@ -105,3 +105,55 @@ public ResponseEntity newBlock() {
 Un TU a également été ajouté. On remarquera encore une fois que celui-ci ne plante pas alors que la méthode n'est pas implémenté...
 
 Complétez la méthode addBlock(). L'indice du nouveau block doit être incrémenté par rapport au bloc précédent. Le block doit contenir les transactions en attente. Ces dernières doivent être réinitialisées.
+
+Solution :
+
+``` java
+Block block = new Block(lastIndex() + 1, new ArrayList<>(pendingTransactions));
+getBlocks().add(block);
+getPendingTransactions().clear();
+```
+
+Cet ajout de block constitue le minage du block. Nous n'avons pas encore de preuve de travail, mais on a une chaine fonctionnelle.
+
+Le fait de miner le block par api est arbitraire. Dans la vie réelle, les règles déclenchant le minage d'un block sont souvent différentes (tous les X blocks, X minutes, etc.).
+
+### Etape 2 : et le minage dans tout ça ?
+
+Notre blockchain est fonctionnelle mais... tout le monde peut l'usurper ! Elle est où la preuve de travail inviolable et si polluante du bitcoin ?
+
+Pour réaliser une preuve de travail, il faut compléter notre blockchain avec deux attributs supplémentaires.
+
+Le hash est une empreinte numérique servant à identifier rapidement la donnée initiale, au même titre qu'une signature pour identifier une personne :
+
+``` java
+private String previousHash;
+```
+
+Le nonce est un **nombre arbitraire** d'un block destiné à être utilisé pour valider une preuve de travail.
+
+``` java
+this.nonce = 0;
+```
+
+La preuve de travail est une fonction mathématique/algorithmique qui doit être difficilement réalisable pour le demandeur, mais facilement vérifiable pour un tiers. Dans notre cas, nous allons trouver un hash de notre block qui commence par n zéros. Nous pouvons réaliser ce travail en faisant varier la valeur du nonce.
+
+En d'autres termes, un block validé par la preuve de travail sera un block dont sa fonction de hashage retournera un hash commençant par n zéros. "n" constitue la difficulté de la preuve de travail. Nous la fixons arbitrairement à 3 pour notre exemple.
+
+``` java
+private final static int DIFFICULTY = 3;
+```
+
+#### Etape 2.1 : le minage
+
+L'api déclanchant le minage a été ajouté dans l'étape 1.2. Cette méthode ne réalisait pas de preuve de travail.
+
+La ligne suivante a été ajoutée à la méthode addBlock(). C'est elle qui constitue le minage :
+
+``` java
+block.mine(DIFFICULTY);
+```
+
+Complétez les appels au constructeur Block() qui se voit modifié avec le hash du block précédant.
+
+Complétez également la méthode mine(). Celle-ci doit permettre d'augmenter la valeur nonce jusqu'à ce que la preuve de travail (méthode proofOfWork() à utiliser) nous renvoie une valeur vraie.

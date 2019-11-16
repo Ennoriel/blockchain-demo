@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Blockchain {
 
+    private final static int DIFFICULTY = 3;
+
     private List<Block> blocks;
     private List<Transaction> pendingTransactions;
 
@@ -21,10 +23,11 @@ public class Blockchain {
     }
 
     @NotNull public Block addBlock() {
-        // Initialisation d'un nouveau block avec les transactions en attente
-        // Réinitialisation des transations en attente
-        // On renvoit le nouveau block
-        return null;
+        Block block = new Block(lastIndex() + 1, new ArrayList<>(pendingTransactions));
+        block.mine(DIFFICULTY);
+        getBlocks().add(block);
+        getPendingTransactions().clear();
+        return block;
     }
 
     private Block lastBlock() {

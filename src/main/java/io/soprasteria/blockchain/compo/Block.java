@@ -14,11 +14,23 @@ public class Block {
     private int index;
     private Date date;
     private List<Transaction> transactions;
+    private String previousHash;
+    private int nonce;
 
-    Block(@NotNull int index, @NotNull List<Transaction> transactions) {
+    Block(@NotNull int index, @NotNull List<Transaction> transactions, String previousHash) {
         this.index = index;
         this.date = new Date();
         this.transactions = transactions;
+        this.previousHash = previousHash;
+        this.nonce = 0;
+    }
+
+    @NotNull boolean proofOfWork(@NotNull int difficulty) {
+        // tant que la méthode n'est pas implémenté (étape à venir), on considère que la preuve de travail est validé.
+        return true;
+    }
+
+    void mine(@NotNull int difficulty) {
     }
 
     public int getIndex() {
@@ -35,5 +47,17 @@ public class Block {
 
     public Transaction getTransaction(int index) {
         return getTransactions().get(index);
+    }
+
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
+    public int getNonce() {
+        return nonce;
+    }
+
+    private void incrementNonce() {
+        this.nonce++;
     }
 }
