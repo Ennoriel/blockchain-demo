@@ -273,3 +273,72 @@ public ResponseEntity consensus() {
 ```
 
 Complétez la méthode resolveConflicts() pour résoudre les conflits ainsi que les méthodes de vérification de la blockchain et des blocks : 
+
+Solution :
+
+``` java
+public boolean resolveConflicts() {
+
+    List<String> neighbours = getNodes();
+    Blockchain newBlockchain = null;
+    int maxLength = getBlocks().size();
+
+    RestTemplate restTemplate = new RestTemplate();
+
+    for (String node : neighbours) {
+        Blockchain neighbourBlockChain = restTemplate.getForObject(String.format("http://%s/chain", node), Blockchain.class);
+        if (neighbourBlockChain != null) {
+            int neighbourBlockChainLength = neighbourBlockChain.getBlocks().size();
+
+            if (neighbourBlockChainLength > maxLength && isBlockchainValid(neighbourBlockChain)) {
+                maxLength = neighbourBlockChainLength;
+                newBlockchain = neighbourBlockChain;
+            }
+        }
+    }
+
+    if (newBlockchain != null) {
+        setBlocks(blocks);
+        return true;
+    }
+    return false;
+}
+```
+
+``` java
+private boolean isFirstBlockValid(@NotNull Blockchain blockchain) {
+    Block firstBlock = blockchain.getBlocks().get(0);
+
+    if (firstBlock.getIndex() != 1)
+        return false;
+
+    return firstBlock.getPreviousHash() == null;
+}
+```
+
+``` java
+private boolean isBlockValid(@NotNull Block previousBlock, @NotNull Block currentBlock) {
+    if (currentBlock.getIndex() != previousBlock.getIndex() + 1)
+        return false;
+
+    if (!currentBlock.getPreviousHash().equals(previousBlock.hash()))
+        return false;
+
+    return currentBlock.proofOfWork(DIFFICULTY);
+}
+```
+
+``` java
+private boolean isBlockchainValid(@NotNull Blockchain blockchain) {
+    if (!blockchain.isFirstBlockValid(blockchain))
+        return false;
+
+    int index = 1;
+    while (index < getBlocks().size()) {
+        if (!isBlockValid(getBlock(index), getBlock(index - 1)))
+            return false;
+        index++;
+    }
+    return true;
+}
+```

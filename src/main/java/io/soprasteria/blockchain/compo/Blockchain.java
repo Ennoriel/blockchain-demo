@@ -34,30 +34,36 @@ public class Blockchain {
         getPendingTransactions().clear();
         return block;
     }
+
     private boolean isFirstBlockValid(@NotNull Blockchain blockchain) {
-        Block firstBlock = null; // récupération du premier block
+        Block firstBlock = blockchain.getBlocks().get(0);
 
-        // si l'index du premier block n'est pas correct, on renvoie false
+        if (firstBlock.getIndex() != 1)
+            return false;
 
-        // si le hash du premier block n'est correct, on renvoie false
-
-        return true;
+        return firstBlock.getPreviousHash() == null;
     }
 
     private boolean isBlockValid(@NotNull Block previousBlock, @NotNull Block currentBlock) {
-        // si l'indice du block ne suit pas le précédant, on renvoie false
+        if (currentBlock.getIndex() != previousBlock.getIndex() + 1)
+            return false;
 
-        // si la valeur de previousHash du block courant n'est pas égale à la valeur calculé du hash du block précédant, on renvoie false
+        if (!currentBlock.getPreviousHash().equals(previousBlock.hash()))
+            return false;
 
-        // si la preuve de travail n'est pas réalisé, on renvoie false;
-
-        return true;
+        return currentBlock.proofOfWork(DIFFICULTY);
     }
 
     private boolean isBlockchainValid(@NotNull Blockchain blockchain) {
-        // si le premier block n'est pas valide, on renvoit false
+        if (!blockchain.isFirstBlockValid(blockchain))
+            return false;
 
-        // si un des autres blocks n'est pas valide, on renvoit false
+        int index = 1;
+        while (index < getBlocks().size()) {
+            if (!isBlockValid(getBlock(index), getBlock(index - 1)))
+                return false;
+            index++;
+        }
         return true;
     }
 
@@ -70,9 +76,9 @@ public class Blockchain {
         RestTemplate restTemplate = new RestTemplate();
 
         for (String node : neighbours) {
-            Blockchain neighbourBlockChain = null; // TODO récupération de la blockchain du voisin
+            Blockchain neighbourBlockChain = restTemplate.getForObject(String.format("http://%s/chain", node), Blockchain.class);
             if (neighbourBlockChain != null) {
-                int neighbourBlockChainLength = 0; // TODO récupération de la taille de la chaine
+                int neighbourBlockChainLength = neighbourBlockChain.getBlocks().size();
 
                 if (neighbourBlockChainLength > maxLength && isBlockchainValid(neighbourBlockChain)) {
                     maxLength = neighbourBlockChainLength;
@@ -87,6 +93,7 @@ public class Blockchain {
         }
         return false;
     }
+
     public void registerNode(URL address) {
         getNodes().add(address.getAuthority());
     }
