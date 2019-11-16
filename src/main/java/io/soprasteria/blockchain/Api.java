@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URL;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class Api {
@@ -37,12 +38,24 @@ public class Api {
     @PostMapping("/nodes/register")
     public ResponseEntity newBlock(@RequestBody List<URL> nodes) {
 
-        // si la liste est vide, on arrête le traitement
+        if (nodes == null || nodes.isEmpty())
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
-        // sinon, on vérifie que les noeuds ne sont pas déjà connus de la blockchain
+        nodes = nodes.stream()
+                .filter(node -> !blockchain.getNodes().contains(node.getAuthority()))
+                .collect(Collectors.toList());
 
-        // on ajoute les noeuds à la blockchain
+        if (nodes.size() == 0)
+            return new ResponseEntity(HttpStatus.I_AM_A_TEAPOT);
 
-        return new ResponseEntity("{\"message\": \"Les noeuds ont été ajoutés\"}", HttpStatus.I_AM_A_TEAPOT);
+        nodes.forEach(node -> blockchain.registerNode(node));
+
+        return new ResponseEntity("{\"message\": \"Les noeuds ont été ajoutés\"}", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/nodes/resolve")
+    public ResponseEntity consensus() {
+        String message = blockchain.resolveConflicts() ? "La chaine a été remplacée" : "La chaine est déjà la référence";
+        return new ResponseEntity(String.format("{\"message\": \"%s\"}", message), HttpStatus.OK);
     }
 }

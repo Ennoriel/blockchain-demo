@@ -3,6 +3,7 @@ package io.soprasteria.blockchain.compo;
 import org.springframework.web.client.RestTemplate;
 
 import javax.validation.constraints.NotNull;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +86,9 @@ public class Blockchain {
             return true;
         }
         return false;
+    }
+    public void registerNode(URL address) {
+        getNodes().add(address.getAuthority());
     }
 
     private Block lastBlock() {
