@@ -26,14 +26,19 @@ public class Block {
     }
 
     @NotNull String hash() {
-        // Calcule le hash d'un block. A compléter au cours de l'étape 2.3
-        return jsonify();
+        return DigestUtils.sha256Hex(jsonify());
     }
 
     @NotNull
     public String jsonify() {
-        // retourne la représentation json d'un block. A compléter au cours de l'étape 2.3
-        return "";
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 
     @NotNull boolean proofOfWork(@NotNull int difficulty) {

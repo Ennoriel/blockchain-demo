@@ -210,3 +210,35 @@ Remplacez la méthode methodeDeHashashage par une méthode de hashage de type sh
     return methodeDeHashashage(jsonify());
 }
 ```
+
+Solution :
+
+``` java
+@NotNull
+public String jsonify() {
+    ObjectMapper mapper = new ObjectMapper();
+    String json = "";
+    try {
+        json = mapper.writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+        e.printStackTrace();
+    }
+    return json;
+}
+```
+
+``` java
+return DigestUtils.sha256Hex(jsonify());
+```
+
+### Etape 3 : Je suis tout seul, c'est trop nul !
+
+#### Etape 3.1 : connaitre les autres noeuds
+
+La liste des noeuds a été ajoutée à la blockchain :
+
+``` java
+private List<String> nodes;
+```
+
+L'ajout de noeud a été fait arbitrairement par api. Complétez l'api /nodes/register.
