@@ -1,5 +1,7 @@
 package io.soprasteria.blockchain.compo;
 
+import org.springframework.web.client.RestTemplate;
+
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,47 @@ public class Blockchain {
         getBlocks().add(block);
         getPendingTransactions().clear();
         return block;
+    }
+    private boolean isFirstBlockValid(@NotNull Blockchain blockchain) {
+        // à compléter
+        return true;
+    }
+
+    private boolean isBlockValid(@NotNull Block previousBlock, @NotNull Block currentBlock) {
+        // à compléter
+        return true;
+    }
+
+    private boolean isBlockchainValid(@NotNull Blockchain blockchain) {
+        // à compléter
+        return true;
+    }
+
+    public boolean resolveConflicts() {
+
+        List<String> neighbours = getNodes();
+        Blockchain newBlockchain = null;
+        int maxLength = getBlocks().size();
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        for (String node : neighbours) {
+            Blockchain neighbourBlockChain = null; // TODO récupération de la blockchain du voisin
+            if (neighbourBlockChain != null) {
+                int neighbourBlockChainLength = 0; // TODO récupération de la taille de la chaine
+
+                if (neighbourBlockChainLength > maxLength && isBlockchainValid(neighbourBlockChain)) {
+                    maxLength = neighbourBlockChainLength;
+                    newBlockchain = neighbourBlockChain;
+                }
+            }
+        }
+
+        if (newBlockchain != null) {
+            setBlocks(blocks);
+            return true;
+        }
+        return false;
     }
 
     private Block lastBlock() {

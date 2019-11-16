@@ -242,3 +242,34 @@ private List<String> nodes;
 ```
 
 L'ajout de noeud a été fait arbitrairement par api. Complétez l'api /nodes/register.
+
+Solution :
+
+``` java
+@PostMapping("/nodes/register")
+public ResponseEntity newBlock(@RequestBody List<URL> nodes) {
+
+    // si la liste est vide, on arrête le traitement
+
+    // sinon, on vérifie que les noeuds ne sont pas déjà connus de la blockchain
+
+    // on ajoute les noeuds à la blockchain
+
+}
+```
+
+#### Etape 3.2 : remplacer la blockchain :(
+
+Le principe de la blockchain de type bitcoin repose dans le fait d'une preuve de travail complexe à résoudre. Lorsque le voisin réussit à résoudre la preuve de travail avant soi, il faut prendre sa représentation de la blockchain pour remplacer la nôtre. Dans ce cas, il est néanmoins nécessaire de vérifier que sa blockchaine est valide (d'ou le besoin pour une preuve de travail d'être difficilement réalisable pour le demandeur, mais facilement vérifiable pour un tiers)
+
+L'api suivante a été ajouté :
+
+``` java
+@GetMapping("/nodes/resolve")
+public ResponseEntity consensus() {
+    String message = blockchain.resolveConflicts() ? "La chaine a été remplacée" : "La chaine est déjà la référence";
+    return new ResponseEntity(String.format("{\"message\": \"%s\"}", message), HttpStatus.OK);
+}
+```
+
+Complétez la méthode resolveConflicts() pour résoudre les conflits ainsi que les méthodes de vérification de la blockchain et des blocks : 
