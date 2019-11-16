@@ -15,7 +15,7 @@ public class Blockchain {
         this.blocks = new ArrayList<>();
         this.pendingTransactions = new ArrayList<>();
 
-        this.blocks.add(new Block(1, this.pendingTransactions, null));
+        this.blocks.add(new Block(1, new ArrayList<>(this.pendingTransactions), null));
     }
 
     public void newTransaction(@NotNull Transaction transaction) {
