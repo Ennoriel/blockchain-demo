@@ -10,10 +10,12 @@ public class Blockchain {
 
     private List<Block> blocks;
     private List<Transaction> pendingTransactions;
+    private List<String> nodes;
 
     public Blockchain() {
         this.blocks = new ArrayList<>();
         this.pendingTransactions = new ArrayList<>();
+        this.nodes = new ArrayList<>();
 
         this.blocks.add(new Block(1, new ArrayList<>(this.pendingTransactions), null));
     }
@@ -56,5 +58,9 @@ public class Blockchain {
 
     public void setPendingTransactions(List<Transaction> pendingTransactions) {
         this.pendingTransactions = pendingTransactions;
+    }
+
+    public List<String> getNodes() {
+        return nodes;
     }
 }
