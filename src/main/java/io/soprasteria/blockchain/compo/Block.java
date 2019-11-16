@@ -37,9 +37,7 @@ public class Block {
     }
 
     @NotNull boolean proofOfWork(@NotNull int difficulty) {
-        // tant que la méthode n'est pas implémenté (étape à venir), on considère que la preuve de travail est validé.
-        // A compléter au cours de l'étape 2.2
-        return true;
+        return ("0".repeat(difficulty)).equals(hash().substring(0, difficulty));
     }
 
     void mine(@NotNull int difficulty) {

@@ -182,3 +182,31 @@ while (!this.proofOfWork(difficulty)) {
 #### Etape 2.2 : la méthode proofOfWork()
 
 Complétez la méthode proofOfWork(). Elle permet de valider que le hash de la représentation json d'un block (méthode hash() à utiliser) est valide (qu'il commence par 3 zéros).
+
+Solution :
+
+``` java
+return ("0".repeat(difficulty)).equals(this.hash().substring(0, difficulty));
+```
+
+#### Etape 2.3 : représentation json d'un block
+
+La méthode hash() prendra pour attribut la représentation json du block. Cette représentation sera retournée par la méthode jsonify(). Complétez la méthode jsonify() qui transformera le block en json :
+
+``` java
+@NotNull public String jsonify() {
+    String json = "";
+
+    // conversion de l'objet en json
+
+    return json;
+}
+```
+
+Remplacez la méthode methodeDeHashashage par une méthode de hashage de type sha 256 en hexadécimal.
+
+``` java
+@NotNull String hash() {
+    return methodeDeHashashage(jsonify());
+}
+```
