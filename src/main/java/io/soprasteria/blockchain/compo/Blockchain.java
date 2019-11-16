@@ -17,7 +17,14 @@ public class Blockchain {
     }
 
     public void newTransaction(@NotNull Transaction transaction) {
+        getPendingTransactions().add(transaction);
+    }
 
+    @NotNull public Block addBlock() {
+        // Initialisation d'un nouveau block avec les transactions en attente
+        // Réinitialisation des transations en attente
+        // On renvoit le nouveau block
+        return null;
     }
 
     private Block lastBlock() {

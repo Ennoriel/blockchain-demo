@@ -80,3 +80,28 @@ public ResponseEntity newTransaction(@RequestBody Transaction transaction) {
 Un TU a également été ajouté. On remarquera d'ailleurs que celui-ci ne plante pas alors que la méthode n'est pas implémenté...
 
 Complétez la méthode newTransaction(). N'hésitez pas à réflechir pour compléter le TU.
+
+Solution :
+
+``` java
+getPendingTransactions().add(transaction);
+```
+
+Les nouvelles transactions sont intégrées aux transactions en attente. Elles ne sont pas ajoutées à un bloc tout de suite. Par contre, cela signifie qu'elles ne sont pas encore effectives. Elles ne seront effectivés qu'une fois le block "validé".
+
+#### Etape 1.3 : Ajouter un block
+
+Un endpoint a été rajouté pour "miner" (valider) un nouveau block dans la classe Api :
+
+``` java
+@PostMapping("/blocks")
+public ResponseEntity newBlock() {
+
+    Block block = blockchain.addBlock();
+    return new ResponseEntity(block.jsonify(), HttpStatus.CREATED);
+}
+```
+
+Un TU a également été ajouté. On remarquera encore une fois que celui-ci ne plante pas alors que la méthode n'est pas implémenté...
+
+Complétez la méthode addBlock(). L'indice du nouveau block doit être incrémenté par rapport au bloc précédent. Le block doit contenir les transactions en attente. Ces dernières doivent être réinitialisées.
