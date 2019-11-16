@@ -34,17 +34,29 @@ public class Blockchain {
         return block;
     }
     private boolean isFirstBlockValid(@NotNull Blockchain blockchain) {
-        // à compléter
+        Block firstBlock = null; // récupération du premier block
+
+        // si l'index du premier block n'est pas correct, on renvoie false
+
+        // si le hash du premier block n'est correct, on renvoie false
+
         return true;
     }
 
     private boolean isBlockValid(@NotNull Block previousBlock, @NotNull Block currentBlock) {
-        // à compléter
+        // si l'indice du block ne suit pas le précédant, on renvoie false
+
+        // si la valeur de previousHash du block courant n'est pas égale à la valeur calculé du hash du block précédant, on renvoie false
+
+        // si la preuve de travail n'est pas réalisé, on renvoie false;
+
         return true;
     }
 
     private boolean isBlockchainValid(@NotNull Blockchain blockchain) {
-        // à compléter
+        // si le premier block n'est pas valide, on renvoit false
+
+        // si un des autres blocks n'est pas valide, on renvoit false
         return true;
     }
 
